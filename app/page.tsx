@@ -50,17 +50,20 @@ export default function Home() {
       }}
       className="relative min-h-screen overflow-hidden bg-[#020617] text-white"
     >
+      {/* Mouse Glow */}
       <motion.div
         style={{ left: smoothX, top: smoothY }}
         className="pointer-events-none fixed z-0 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/20 blur-3xl"
       />
 
+      {/* Background */}
       <div className="fixed inset-0 z-0">
         <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/20 blur-[140px]" />
         <div className="absolute bottom-0 right-0 h-[600px] w-[600px] rounded-full bg-blue-600/20 blur-[140px]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:80px_80px]" />
       </div>
 
+      {/* Navbar */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -84,12 +87,16 @@ export default function Home() {
             </a>
           </div>
 
-          <button className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
+          <a
+            href="/login"
+            className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition hover:scale-105 hover:bg-cyan-200"
+          >
             Start Monitoring
-          </button>
+          </a>
         </div>
       </motion.nav>
 
+      {/* Hero */}
       <section className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-28">
         <motion.div
           initial={{ opacity: 0, y: 70 }}
@@ -112,13 +119,19 @@ export default function Home() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button className="rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
+            <a
+              href="/login"
+              className="rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200"
+            >
               Start Monitoring
-            </button>
+            </a>
 
-            <button className="rounded-full border border-white/15 bg-white/5 px-8 py-4 font-semibold text-white backdrop-blur-xl transition hover:bg-white/10">
+            <a
+              href="/dashboard"
+              className="rounded-full border border-white/15 bg-white/5 px-8 py-4 font-semibold text-white backdrop-blur-xl transition hover:bg-white/10"
+            >
               View Security Demo
-            </button>
+            </a>
           </div>
 
           <div className="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
@@ -136,15 +149,18 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* Features */}
       <section id="features" className="relative z-10 px-6 py-32">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <p className="mb-3 text-sm uppercase tracking-[0.3em] text-cyan-300">
               Platform
             </p>
+
             <h2 className="text-4xl font-bold md:text-6xl">
               Security visibility in one place.
             </h2>
+
             <p className="mx-auto mt-5 max-w-2xl text-white/60">
               Built around the core problems security teams care about:
               detection, prioritisation, and response.
@@ -165,58 +181,20 @@ export default function Home() {
                   {feature.icon}
                 </div>
 
-                <h3 className="mb-4 text-2xl font-bold">{feature.title}</h3>
-                <p className="leading-7 text-white/60">{feature.text}</p>
+                <h3 className="mb-4 text-2xl font-bold">
+                  {feature.title}
+                </h3>
+
+                <p className="leading-7 text-white/60">
+                  {feature.text}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-7xl rounded-[2.5rem] border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl md:p-10">
-          <div className="rounded-[2rem] border border-white/10 bg-black/50 p-6">
-            <div className="mb-6 flex gap-2">
-              <span className="h-3 w-3 rounded-full bg-red-400" />
-              <span className="h-3 w-3 rounded-full bg-yellow-400" />
-              <span className="h-3 w-3 rounded-full bg-green-400" />
-            </div>
-
-            <div className="mb-8 grid gap-4 md:grid-cols-4">
-              {[
-                ["Active Alerts", "18"],
-                ["Blocked Attempts", "342"],
-                ["Risk Score", "Low"],
-                ["Systems Online", "99.9%"],
-              ].map(([label, value]) => (
-                <div key={label} className="rounded-2xl bg-white/5 p-5">
-                  <p className="text-sm text-white/40">{label}</p>
-                  <p className="mt-2 text-2xl font-bold">{value}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-3">
-              {[
-                "Suspicious login attempt blocked from unknown location",
-                "Unusual API traffic detected on payment endpoint",
-                "Multiple failed authentication attempts prevented",
-              ].map((alert) => (
-                <div
-                  key={alert}
-                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4"
-                >
-                  <span className="text-white/75">{alert}</span>
-                  <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-sm text-cyan-300">
-                    Reviewed
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* Pricing */}
       <section id="pricing" className="relative z-10 px-6 py-32">
         <div className="mx-auto max-w-5xl rounded-[2.5rem] border border-white/10 bg-white/[0.04] p-10 text-center shadow-2xl backdrop-blur-xl md:p-16">
           <p className="mb-3 text-sm uppercase tracking-[0.3em] text-cyan-300">
@@ -234,7 +212,9 @@ export default function Home() {
 
           <div className="mx-auto mt-12 max-w-md rounded-[2rem] border border-cyan-400/30 bg-black/40 p-8">
             <h3 className="text-2xl font-bold">Starter Security</h3>
+
             <p className="mt-5 text-6xl font-black">£19</p>
+
             <p className="mt-2 text-white/50">per month</p>
 
             <ul className="mt-8 space-y-3 text-left text-white/70">
@@ -244,13 +224,17 @@ export default function Home() {
               <li>✓ Weekly security summary</li>
             </ul>
 
-            <button className="mt-8 w-full rounded-full bg-white py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
+            <a
+              href="/login"
+              className="mt-8 block w-full rounded-full bg-white py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200"
+            >
               Start Monitoring
-            </button>
+            </a>
           </div>
         </div>
       </section>
 
+      {/* FAQ */}
       <section id="faq" className="relative z-10 px-6 py-32">
         <div className="mx-auto max-w-4xl">
           <h2 className="mb-12 text-center text-4xl font-bold md:text-6xl">
@@ -263,33 +247,44 @@ export default function Home() {
                 key={item.q}
                 className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl"
               >
-                <h3 className="text-xl font-semibold">{item.q}</h3>
-                <p className="mt-3 text-white/60">{item.a}</p>
+                <h3 className="text-xl font-semibold">
+                  {item.q}
+                </h3>
+
+                <p className="mt-3 text-white/60">
+                  {item.a}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* CTA */}
       <section className="relative z-10 px-6 py-24">
         <div className="mx-auto max-w-5xl rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 p-12 text-center shadow-2xl backdrop-blur-xl">
           <h2 className="text-4xl font-bold md:text-6xl">
             Turn security data into action.
           </h2>
+
           <p className="mx-auto mt-5 max-w-2xl text-white/65">
             Use this project as your cybersecurity SaaS portfolio piece and keep
             improving it into a real dashboard.
           </p>
 
-          <button className="mt-8 rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
+          <a
+            href="/login"
+            className="mt-8 inline-block rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200"
+          >
             Continue Building
-          </button>
+          </a>
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="relative z-10 border-t border-white/10 px-6 py-10 text-center text-white/50">
-        © 2026 SentinelIQ. Cybersecurity SaaS landing page built with Next.js,
-        Tailwind CSS, and Framer Motion.
+        © 2026 SentinelIQ. Cybersecurity SaaS landing page built with
+        Next.js, Tailwind CSS, and Framer Motion.
       </footer>
     </main>
   );
