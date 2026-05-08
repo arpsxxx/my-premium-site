@@ -4,34 +4,34 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const features = [
   {
-    title: "Premium Design",
-    text: "Luxury spacing, polished typography, glass cards, gradients, and a modern SaaS feel.",
-    icon: "✦",
+    title: "Threat Detection",
+    text: "Monitor suspicious activity, login risks, unusual traffic, and potential attacks before they escalate.",
+    icon: "🛡️",
   },
   {
-    title: "AI Workflow",
-    text: "Generate sections, layouts, copy, components, and quick design improvements using AI.",
+    title: "Live Risk Alerts",
+    text: "Get instant alerts when risky behaviour, abnormal access, or security anomalies are detected.",
     icon: "⚡",
   },
   {
-    title: "Fast Performance",
-    text: "Built with Next.js, Tailwind CSS, smooth animations, and responsive layouts.",
-    icon: "🚀",
+    title: "Security Dashboard",
+    text: "Visualise risk levels, active incidents, blocked attempts, and system health in one clean dashboard.",
+    icon: "📊",
   },
 ];
 
 const faqs = [
   {
-    q: "Can I customise the website?",
-    a: "Yes. You can change the text, colours, sections, layout, buttons, and branding.",
+    q: "What is SentinelIQ?",
+    a: "SentinelIQ is a concept cybersecurity SaaS platform that shows how teams could monitor risks, alerts, and suspicious activity.",
   },
   {
-    q: "Is this mobile responsive?",
-    a: "Yes. The layout adapts nicely for desktop, tablet, and mobile screens.",
+    q: "Is this a real security product?",
+    a: "Right now it is a portfolio landing page, but you can later connect it to real APIs, logs, authentication, and dashboards.",
   },
   {
-    q: "Can I deploy it online?",
-    a: "Yes. You can deploy it for free using Vercel when the project is ready.",
+    q: "Can I use this in my portfolio?",
+    a: "Yes. This is much stronger than a generic AI website because it shows a clear niche and product idea.",
   },
 ];
 
@@ -50,20 +50,17 @@ export default function Home() {
       }}
       className="relative min-h-screen overflow-hidden bg-[#020617] text-white"
     >
-      {/* Mouse glow */}
       <motion.div
         style={{ left: smoothX, top: smoothY }}
-        className="pointer-events-none fixed z-0 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-500/20 blur-3xl"
+        className="pointer-events-none fixed z-0 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/20 blur-3xl"
       />
 
-      {/* Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-purple-500/20 blur-[140px]" />
-        <div className="absolute bottom-0 right-0 h-[600px] w-[600px] rounded-full bg-blue-500/20 blur-[140px]" />
+        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/20 blur-[140px]" />
+        <div className="absolute bottom-0 right-0 h-[600px] w-[600px] rounded-full bg-blue-600/20 blur-[140px]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:80px_80px]" />
       </div>
 
-      {/* Navbar */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -72,12 +69,12 @@ export default function Home() {
       >
         <div className="mx-auto flex items-center justify-between px-6 py-4">
           <h1 className="text-2xl font-bold tracking-tight">
-            Arpit<span className="text-purple-400">AI</span>
+            Sentinel<span className="text-cyan-400">IQ</span>
           </h1>
 
           <div className="hidden gap-8 text-sm text-white/70 md:flex">
             <a href="#features" className="transition hover:text-white">
-              Features
+              Platform
             </a>
             <a href="#pricing" className="transition hover:text-white">
               Pricing
@@ -87,13 +84,12 @@ export default function Home() {
             </a>
           </div>
 
-          <button className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition hover:scale-105 hover:bg-purple-200">
-            Start Free
+          <button className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
+            Start Monitoring
           </button>
         </div>
       </motion.nav>
 
-      {/* Hero */}
       <section className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-28">
         <motion.div
           initial={{ opacity: 0, y: 70 }}
@@ -101,39 +97,35 @@ export default function Home() {
           transition={{ duration: 0.9 }}
           className="mx-auto max-w-6xl text-center"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mx-auto mb-8 w-fit rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur-xl"
-          >
-            AI-powered websites built beautifully
-          </motion.div>
+          <div className="mx-auto mb-8 w-fit rounded-full border border-cyan-400/20 bg-cyan-400/10 px-5 py-2 text-sm text-cyan-200 backdrop-blur-xl">
+            AI-powered cyber risk monitoring
+          </div>
 
-          <h1 className="bg-gradient-to-b from-white via-white to-white/40 bg-clip-text text-6xl font-black leading-tight tracking-tight text-transparent md:text-8xl">
-            Build Premium Websites with AI
+          <h1 className="bg-gradient-to-b from-white via-white to-cyan-200/50 bg-clip-text text-6xl font-black leading-tight tracking-tight text-transparent md:text-8xl">
+            Detect threats before they become breaches.
           </h1>
 
           <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-white/65 md:text-xl">
-            A modern landing page template built with Next.js, Tailwind CSS, and
-            Framer Motion — perfect for SaaS, portfolios, startups, and AI tools.
+            SentinelIQ helps security teams monitor suspicious behaviour,
+            prioritise risks, and respond faster with a clean AI-assisted
+            cybersecurity dashboard.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button className="rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-purple-200">
-              Get Started
+            <button className="rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
+              Start Monitoring
             </button>
 
             <button className="rounded-full border border-white/15 bg-white/5 px-8 py-4 font-semibold text-white backdrop-blur-xl transition hover:bg-white/10">
-              View Demo
+              View Security Demo
             </button>
           </div>
 
           <div className="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
             {[
-              ["90+", "Performance"],
-              ["100%", "Responsive"],
-              ["24h", "Build Speed"],
+              ["1.2K", "Events Scanned"],
+              ["98%", "Risk Accuracy"],
+              ["24/7", "Monitoring"],
             ].map(([number, label]) => (
               <div key={label} className="rounded-2xl bg-black/20 p-5">
                 <p className="text-3xl font-bold">{number}</p>
@@ -144,19 +136,18 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Features */}
       <section id="features" className="relative z-10 px-6 py-32">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
-            <p className="mb-3 text-sm uppercase tracking-[0.3em] text-purple-300">
-              Features
+            <p className="mb-3 text-sm uppercase tracking-[0.3em] text-cyan-300">
+              Platform
             </p>
             <h2 className="text-4xl font-bold md:text-6xl">
-              Everything looks expensive.
+              Security visibility in one place.
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-white/60">
-              Designed to feel like a premium startup website, not a basic
-              AI-generated page.
+              Built around the core problems security teams care about:
+              detection, prioritisation, and response.
             </p>
           </div>
 
@@ -168,14 +159,13 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.15 }}
-                className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl backdrop-blur-xl transition hover:-translate-y-2 hover:border-purple-400/40 hover:bg-white/[0.08]"
+                className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl backdrop-blur-xl transition hover:-translate-y-2 hover:border-cyan-400/40 hover:bg-white/[0.08]"
               >
-                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-500/20 text-2xl">
+                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-500/20 text-2xl">
                   {feature.icon}
                 </div>
 
                 <h3 className="mb-4 text-2xl font-bold">{feature.title}</h3>
-
                 <p className="leading-7 text-white/60">{feature.text}</p>
               </motion.div>
             ))}
@@ -183,7 +173,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Showcase */}
       <section className="relative z-10 px-6 py-24">
         <div className="mx-auto max-w-7xl rounded-[2.5rem] border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl md:p-10">
           <div className="rounded-[2rem] border border-white/10 bg-black/50 p-6">
@@ -193,60 +182,75 @@ export default function Home() {
               <span className="h-3 w-3 rounded-full bg-green-400" />
             </div>
 
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl bg-white/5 p-6">
-                <p className="text-sm text-white/40">Stack</p>
-                <p className="mt-2 text-xl font-bold">Next.js + Tailwind</p>
-              </div>
-              <div className="rounded-2xl bg-white/5 p-6">
-                <p className="text-sm text-white/40">Motion</p>
-                <p className="mt-2 text-xl font-bold">Framer Motion</p>
-              </div>
-              <div className="rounded-2xl bg-white/5 p-6">
-                <p className="text-sm text-white/40">Style</p>
-                <p className="mt-2 text-xl font-bold">Premium SaaS</p>
-              </div>
+            <div className="mb-8 grid gap-4 md:grid-cols-4">
+              {[
+                ["Active Alerts", "18"],
+                ["Blocked Attempts", "342"],
+                ["Risk Score", "Low"],
+                ["Systems Online", "99.9%"],
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-2xl bg-white/5 p-5">
+                  <p className="text-sm text-white/40">{label}</p>
+                  <p className="mt-2 text-2xl font-bold">{value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-3">
+              {[
+                "Suspicious login attempt blocked from unknown location",
+                "Unusual API traffic detected on payment endpoint",
+                "Multiple failed authentication attempts prevented",
+              ].map((alert) => (
+                <div
+                  key={alert}
+                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4"
+                >
+                  <span className="text-white/75">{alert}</span>
+                  <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-sm text-cyan-300">
+                    Reviewed
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
       <section id="pricing" className="relative z-10 px-6 py-32">
         <div className="mx-auto max-w-5xl rounded-[2.5rem] border border-white/10 bg-white/[0.04] p-10 text-center shadow-2xl backdrop-blur-xl md:p-16">
-          <p className="mb-3 text-sm uppercase tracking-[0.3em] text-blue-300">
+          <p className="mb-3 text-sm uppercase tracking-[0.3em] text-cyan-300">
             Pricing
           </p>
 
           <h2 className="text-4xl font-bold md:text-6xl">
-            Launch your idea faster.
+            Security that scales with you.
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-white/60">
-            Use this as a starting point for client websites, personal projects,
-            SaaS ideas, or portfolio work.
+            A portfolio-ready pricing section for a modern cybersecurity SaaS
+            platform.
           </p>
 
-          <div className="mx-auto mt-12 max-w-md rounded-[2rem] border border-purple-400/30 bg-black/40 p-8">
-            <h3 className="text-2xl font-bold">Starter Build</h3>
-            <p className="mt-5 text-6xl font-black">£0</p>
-            <p className="mt-2 text-white/50">Built locally by you</p>
+          <div className="mx-auto mt-12 max-w-md rounded-[2rem] border border-cyan-400/30 bg-black/40 p-8">
+            <h3 className="text-2xl font-bold">Starter Security</h3>
+            <p className="mt-5 text-6xl font-black">£19</p>
+            <p className="mt-2 text-white/50">per month</p>
 
             <ul className="mt-8 space-y-3 text-left text-white/70">
-              <li>✓ Premium landing page</li>
-              <li>✓ Responsive layout</li>
-              <li>✓ Framer Motion animations</li>
-              <li>✓ Ready for Vercel deployment</li>
+              <li>✓ Threat activity dashboard</li>
+              <li>✓ Suspicious login alerts</li>
+              <li>✓ Basic risk scoring</li>
+              <li>✓ Weekly security summary</li>
             </ul>
 
-            <button className="mt-8 w-full rounded-full bg-white py-4 font-semibold text-black transition hover:scale-105 hover:bg-purple-200">
-              Start Building
+            <button className="mt-8 w-full rounded-full bg-white py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
+              Start Monitoring
             </button>
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
       <section id="faq" className="relative z-10 px-6 py-32">
         <div className="mx-auto max-w-4xl">
           <h2 className="mb-12 text-center text-4xl font-bold md:text-6xl">
@@ -267,26 +271,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-5xl rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-12 text-center shadow-2xl backdrop-blur-xl">
+        <div className="mx-auto max-w-5xl rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 p-12 text-center shadow-2xl backdrop-blur-xl">
           <h2 className="text-4xl font-bold md:text-6xl">
-            Ready to build your next project?
+            Turn security data into action.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-white/65">
-            Keep improving this project section by section and turn it into a
-            portfolio-quality website.
+            Use this project as your cybersecurity SaaS portfolio piece and keep
+            improving it into a real dashboard.
           </p>
 
-          <button className="mt-8 rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-purple-200">
+          <button className="mt-8 rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105 hover:bg-cyan-200">
             Continue Building
           </button>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="relative z-10 border-t border-white/10 px-6 py-10 text-center text-white/50">
-        © 2026 ArpitAI. Built with Next.js, Tailwind CSS, and Framer Motion.
+        © 2026 SentinelIQ. Cybersecurity SaaS landing page built with Next.js,
+        Tailwind CSS, and Framer Motion.
       </footer>
     </main>
   );
