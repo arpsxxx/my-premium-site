@@ -1,6 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const stats = [
   { label: "Active Threats", value: "18", change: "+4 today" },
@@ -16,6 +24,16 @@ const alerts = [
   "Multiple failed authentication attempts detected",
   "Unusual API traffic spike on payment endpoint",
   "Possible brute-force pattern blocked",
+];
+
+const threatData = [
+  { time: "10:00", threats: 12 },
+  { time: "11:00", threats: 24 },
+  { time: "12:00", threats: 18 },
+  { time: "13:00", threats: 36 },
+  { time: "14:00", threats: 28 },
+  { time: "15:00", threats: 44 },
+  { time: "16:00", threats: 31 },
 ];
 
 export default function Dashboard() {
@@ -102,19 +120,23 @@ export default function Dashboard() {
                 </span>
               </div>
 
-              <div className="mt-8 flex h-72 items-end gap-3">
-                {[40, 70, 45, 90, 65, 100, 75, 55, 85, 60, 95, 80].map(
-                  (height, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ height: 0 }}
-                      animate={{ height: `${height}%` }}
-                      transition={{ delay: index * 0.05 }}
-                      className="w-full rounded-t-xl bg-gradient-to-t from-cyan-500 to-blue-300"
-                    />
-                  )
-                )}
-              </div>
+              <div className="mt-8 h-72">
+  <ResponsiveContainer width="100%" height="100%">
+    <BarChart data={threatData}>
+      <XAxis dataKey="time" stroke="#94a3b8" />
+      <YAxis stroke="#94a3b8" />
+      <Tooltip
+        contentStyle={{
+          backgroundColor: "#020617",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "16px",
+          color: "#fff",
+        }}
+      />
+      <Bar dataKey="threats" fill="#22d3ee" radius={[10, 10, 0, 0]} />
+    </BarChart>
+  </ResponsiveContainer>
+</div>
             </div>
 
             <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
