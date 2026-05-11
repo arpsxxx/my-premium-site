@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { motion, AnimatePresence } from "framer-motion";
+
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { collection, onSnapshot } from "firebase/firestore";
+
+import { auth, db } from "@/lib/firebase";
 
 import {
   BarChart,
@@ -11,6 +18,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+type Incident = {
+  id: string;
+  title: string;
+  severity: string;
+  time: string;
+  status?: string;
+};
 
 const threatData = [
   { time: "10:00", threats: 12 },
@@ -22,21 +37,13 @@ const threatData = [
   { time: "16:00", threats: 31 },
 ];
 
-const incidents = [
+const fallbackIncidents: Incident[] = [
   {
+    id: "fallback-1",
     title: "Suspicious Login Attempt",
     severity: "High",
     time: "2 mins ago",
-  },
-  {
-    title: "Firewall blocked malicious traffic",
-    severity: "Medium",
-    time: "14 mins ago",
-  },
-  {
-    title: "Abnormal API request pattern",
-    severity: "Low",
-    time: "30 mins ago",
+    status: "Reviewed",
   },
 ];
 
@@ -48,6 +55,8 @@ const logs = [
 ];
 
 export default function Dashboard() {
+  const router = useRouter();
+
   const notifications = [
     "Blocked suspicious login from unknown IP",
     "Firewall prevented brute-force attempt",
@@ -56,20 +65,66 @@ export default function Dashboard() {
   ];
 
   const [toast, setToast] = useState(notifications[0]);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [incidents, setIncidents] = useState<Incident[]>(fallbackIncidents);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push("/login");
+      } else {
+        setCheckingAuth(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "incidents"), (snapshot) => {
+      const incidentData = snapshot.docs.map((doc) => {
+        const data = doc.data();
+
+        return {
+          id: doc.id,
+          title: data.title || "Untitled incident",
+          severity: data.severity || "Low",
+          time: data.time || "Just now",
+          status: data.status || "Open",
+        };
+      });
+
+      if (incidentData.length > 0) {
+        setIncidents(incidentData);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setToast(
-        notifications[Math.floor(Math.random() * notifications.length)]
-      );
+      setToast(notifications[Math.floor(Math.random() * notifications.length)]);
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
+  async function handleLogout() {
+    await signOut(auth);
+    router.push("/login");
+  }
+
+  if (checkingAuth) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#020617] text-white">
+        <p className="text-white/60">Checking authentication...</p>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-[#020617] text-white">
-      {/* Live Toast */}
       <AnimatePresence mode="wait">
         <motion.div
           key={toast}
@@ -85,70 +140,68 @@ export default function Dashboard() {
       </AnimatePresence>
 
       <div className="flex">
-        {/* Sidebar */}
         <aside className="sticky top-0 hidden h-screen w-72 border-r border-white/10 bg-black/20 p-6 backdrop-blur-xl lg:block">
           <h1 className="text-4xl font-black tracking-tight">
             Sentinel<span className="text-cyan-400">IQ</span>
           </h1>
 
           <nav className="mt-12 space-y-3">
-            {[
-              "Overview",
-              "Threats",
-              "Incidents",
-              "Logs",
-              "Settings",
-            ].map((item, index) => (
-              <div
-                key={item}
-                className={`rounded-2xl px-4 py-3 text-sm font-medium transition ${
-                  index === 0
-                    ? "bg-cyan-500/20 text-cyan-300"
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                {item}
-              </div>
-            ))}
+            {["Overview", "Threats", "Incidents", "Logs", "Settings"].map(
+              (item, index) => (
+                <div
+                  key={item}
+                  className={`rounded-2xl px-4 py-3 text-sm font-medium transition ${
+                    index === 0
+                      ? "bg-cyan-500/20 text-cyan-300"
+                      : "text-white/60 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  {item}
+                </div>
+              )
+            )}
           </nav>
 
           <div className="mt-16 rounded-3xl border border-cyan-400/20 bg-cyan-500/10 p-6">
             <p className="text-sm text-cyan-300">Security Status</p>
-
             <h3 className="mt-3 text-4xl font-bold">Protected</h3>
-
             <p className="mt-3 text-sm leading-6 text-white/60">
               All monitored systems are currently stable.
             </p>
           </div>
         </aside>
 
-        {/* Main */}
         <section className="flex-1 p-6 lg:p-10">
-          {/* Header */}
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">
                 Live Monitoring
               </p>
-
               <h1 className="mt-3 text-5xl font-black md:text-7xl">
                 Security Dashboard
               </h1>
             </div>
 
-            <a
-              href="/"
-              className="w-fit rounded-full border border-white/10 bg-white/[0.03] px-6 py-3 text-sm font-medium transition hover:bg-white/[0.08]"
-            >
-              Back Home
-            </a>
+            <div className="flex gap-3">
+              <a
+                href="/"
+                className="w-fit rounded-full border border-white/10 bg-white/[0.03] px-6 py-3 text-sm font-medium transition hover:bg-white/[0.08]"
+              >
+                Back Home
+              </a>
+
+              <button
+                onClick={handleLogout}
+                className="w-fit rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-black transition hover:bg-cyan-300"
+              >
+                Logout
+              </button>
+            </div>
           </div>
 
-          {/* Stats */}
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {[
-              ["Active Threats", "18", "+4 today"],
+              ["Active Threats", String(incidents.length), "Live from Firestore"],
               ["Blocked Attempts", "342", "Last 24h"],
               ["Risk Score", "Low", "Stable"],
               ["Systems Online", "99.9%", "Healthy"],
@@ -160,21 +213,16 @@ export default function Dashboard() {
                 className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl"
               >
                 <p className="text-white/50">{title}</p>
-
                 <h3 className="mt-4 text-5xl font-black">{value}</h3>
-
                 <p className="mt-4 text-cyan-300">{sub}</p>
               </motion.div>
             ))}
           </div>
 
-          {/* Charts */}
           <div className="mt-10 grid gap-6 xl:grid-cols-3">
-            {/* Threat Chart */}
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl xl:col-span-2">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold">Threat Activity</h2>
-
                 <div className="rounded-full bg-cyan-500/20 px-4 py-2 text-sm text-cyan-300">
                   Last 12 hours
                 </div>
@@ -184,9 +232,7 @@ export default function Dashboard() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={threatData}>
                     <XAxis dataKey="time" stroke="#94a3b8" />
-
                     <YAxis stroke="#94a3b8" />
-
                     <Tooltip
                       contentStyle={{
                         backgroundColor: "#020617",
@@ -195,7 +241,6 @@ export default function Dashboard() {
                         color: "#fff",
                       }}
                     />
-
                     <Bar
                       dataKey="threats"
                       fill="#22d3ee"
@@ -206,34 +251,28 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Risk */}
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 text-center backdrop-blur-xl">
               <h2 className="text-2xl font-bold">Risk Level</h2>
-
               <div className="mx-auto mt-10 flex h-48 w-48 items-center justify-center rounded-full border-[20px] border-cyan-500 bg-cyan-500/10">
                 <div>
                   <p className="text-6xl font-black">Low</p>
-
                   <p className="mt-2 text-white/50">Current risk</p>
                 </div>
               </div>
-
               <p className="mt-8 text-white/60">
                 Risk level is currently low. No critical incidents detected.
               </p>
             </div>
           </div>
 
-          {/* Incidents + Logs */}
           <div className="mt-10 grid gap-6 xl:grid-cols-2">
-            {/* Incidents */}
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
               <h2 className="text-2xl font-bold">Incident Feed</h2>
 
               <div className="mt-8 space-y-4">
                 {incidents.map((incident) => (
                   <div
-                    key={incident.title}
+                    key={incident.id}
                     className="rounded-2xl border border-white/10 bg-black/20 p-5"
                   >
                     <div className="flex items-center justify-between">
@@ -252,15 +291,15 @@ export default function Dashboard() {
                       </span>
                     </div>
 
-                    <p className="mt-3 text-sm text-white/50">
-                      {incident.time}
-                    </p>
+                    <div className="mt-3 flex items-center justify-between text-sm">
+                      <p className="text-white/50">{incident.time}</p>
+                      <p className="text-cyan-300">{incident.status}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Logs */}
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
               <h2 className="text-2xl font-bold">Attack Logs</h2>
 

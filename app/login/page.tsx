@@ -1,65 +1,137 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { motion } from "framer-motion";
 
-export default function Login() {
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+
+import { auth } from "@/lib/firebase";
+
+export default function LoginPage() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
+  const [error, setError] = useState("");
+
+  async function createSession(idToken: string) {
+    await fetch("/api/session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ idToken }),
+    });
+  }
+
+  async function handleAuth() {
+    try {
+      setLoading(true);
+      setError("");
+
+      let userCredential;
+
+      if (isSignup) {
+        userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+      } else {
+        userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+      }
+
+      const idToken = await userCredential.user.getIdToken();
+
+      await createSession(idToken);
+
+      router.push("/dashboard");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#020617] px-6 text-white">
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/20 blur-[140px]" />
-        <div className="absolute bottom-0 right-0 h-[600px] w-[600px] rounded-full bg-blue-600/20 blur-[140px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:80px_80px]" />
-      </div>
+    <main className="flex min-h-screen items-center justify-center bg-[#020617] px-6 text-white">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:80px_80px]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-md rounded-[2rem] border border-white/10 bg-white/[0.05] p-8 shadow-2xl backdrop-blur-xl"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 w-full max-w-md rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl backdrop-blur-xl"
       >
-        <a href="/" className="text-sm text-white/50 hover:text-white">
-          ← Back home
-        </a>
+        <h1 className="text-center text-4xl font-black">
+          Sentinel<span className="text-cyan-400">IQ</span>
+        </h1>
 
-        <div className="mt-8">
-          <h1 className="text-3xl font-black">
-            Sentinel<span className="text-cyan-400">IQ</span>
-          </h1>
-          <p className="mt-3 text-white/60">
-            Sign in to access your security dashboard.
-          </p>
+        <p className="mt-4 text-center text-white/50">
+          {isSignup
+            ? "Create your security account"
+            : "Sign into your dashboard"}
+        </p>
+
+        <div className="mt-8 space-y-5">
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 outline-none transition focus:border-cyan-400"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 outline-none transition focus:border-cyan-400"
+          />
+
+          {error && (
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300">
+              {error}
+            </div>
+          )}
+
+          <button
+            onClick={handleAuth}
+            disabled={loading}
+            className="w-full rounded-2xl bg-cyan-400 py-4 font-semibold text-black transition hover:bg-cyan-300 disabled:opacity-50"
+          >
+            {loading
+              ? "Please wait..."
+              : isSignup
+              ? "Create Account"
+              : "Login"}
+          </button>
         </div>
 
-        <form className="mt-8 space-y-5">
-          <div>
-            <label className="text-sm text-white/60">Email address</label>
-            <input
-              type="email"
-              placeholder="security@example.com"
-              className="mt-2 w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-white outline-none transition placeholder:text-white/30 focus:border-cyan-400"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm text-white/60">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="mt-2 w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-white outline-none transition placeholder:text-white/30 focus:border-cyan-400"
-            />
-          </div>
-
-          <a
-            href="/dashboard"
-            className="block w-full rounded-full bg-white py-4 text-center font-semibold text-black transition hover:scale-105 hover:bg-cyan-200"
-          >
-            Sign In
-          </a>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-white/50">
-          Demo login only — no real authentication yet.
-        </p>
+        <button
+          onClick={() => setIsSignup(!isSignup)}
+          className="mt-6 w-full text-sm text-cyan-300"
+        >
+          {isSignup
+            ? "Already have an account? Login"
+            : "Need an account? Sign up"}
+        </button>
       </motion.div>
     </main>
   );
